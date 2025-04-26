@@ -10,18 +10,20 @@ this project is concluded of ETL from S3 to AWS Glue and loaded into Redshift
 ├── venv/ 
 ├── etl/                        # ETL logic (e.g. Airflow DAGs, Glue scripts, etc.)
 │   └── jobs/
-├── infrastructure/             # Terraform/CDK/etc. for Redshift, S3, etc.
+├── infrastructure/             # Terraform/CDK/etc. for snowflake, S3, etc.
 ├── migrations/                 # SQL or dbt-based migration scripts
 │   ├── migration_db.py
 │   ├── README.md
 │   └── sql/
 │        ├── 00_create_data_warehouse.sql
 │        ├── 01_create_database.sql
-│        ├── 02_create_schema.sql
-│        ├── 03_create_dim_studio.sql
-│        ├── 04_create_dim_genre.sql
-│        ├── 05_create_fact_aniem.sql
-│        └── 06_create_bridge_anime_genre.sql
+│        ├── 02_use_database.sql
+│        ├── 03_create_schema.sql
+│        ├── 04_use_schema.sql
+│        ├── 05_create_dim_studio.sql
+│        ├── 06_create_dim_genre.sql
+│        ├── 07_create_fact_aniem.sql
+│        └── 08_create_bridge_anime_genre.sql
 ├── tests/                      # Data quality or unit tests
 ├── requirements.txt
 ├── .gitignore
@@ -57,14 +59,28 @@ make sure to be in the root ending with `**/anime_analytics_part_2`
 - step 2: </br>
 **create the python environment:**
 ```bash
-python3 -m venv venv
+python3 -m venv etl_venv
 ```
 </br>
 
-- step 3:
+- step 3: </br>
 **enter the virtual environment with this command**
+</br>
+
+`linux`
 ```bash
 source venv/bin/activate
 ```
+</br>
+
+`windows`
+```powershell
+.\etl_venv\Scripts\Activate
+```
 #### these steps should activate you into a virtual environment where if you install any dependencies or extras you merely place them into this environment, outside it, you cant access them
 
+- step 4: </br>
+**deactivate/escape environment**
+```bash
+deactivate
+```
