@@ -7,12 +7,16 @@ from dotenv import load_dotenv
 
 
 def s3_data_extract() -> pd.DataFrame:
+    """
+    get environment vars and call for the fetch_s3_dataframe function,
+    which returns a pandas dataframe which will be returned here.
+    """
 
     try:
         load_dotenv()
         s3 = {
-            'bucket-name': os.environ.get('BUCKET_NAME'),
-            'file-path': os.environ.get('FILE_PATH')
+            'bucket-name': os.environ.get('BUCKET_NAME'), # BUCKET NAME
+            'file-path': os.environ.get('FILE_PATH')      # PATH TO OBJECT FILE 
         } 
         print(f'the bucket name is {s3['bucket-name']}\nthe file path is: {s3['file-path']}')
 
@@ -29,7 +33,9 @@ def s3_data_extract() -> pd.DataFrame:
     
     
 def fetch_s3_dataframe(bucket_name, file_path) -> pd.DataFrame:
-
+    """
+    try to get csv object from data lake in s3 and retun it as a pandas dataframe
+    """
     try:
         client = boto3.client('s3')
         file = client.get_object(Bucket=bucket_name, Key=file_path)
