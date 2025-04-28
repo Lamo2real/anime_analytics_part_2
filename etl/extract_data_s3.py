@@ -15,7 +15,7 @@ def s3_data_extract() -> pd.DataFrame:
     try:
         load_dotenv()
         s3 = {
-            'bucket-name': os.environ.get('BUCKET_NAME'), # BUCKET NAME
+            'bucket-name': os.environ.get('BUCKET_NAME'), # BUCKET NAME 
             'file-path': os.environ.get('FILE_PATH')      # PATH TO OBJECT FILE 
         } 
         print(f'the bucket name is {s3['bucket-name']}\nthe file path is: {s3['file-path']}')
