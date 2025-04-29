@@ -2,3 +2,4 @@ etl_venv
 *.env
 *.csv
 *__pycache__
+*.terraform*

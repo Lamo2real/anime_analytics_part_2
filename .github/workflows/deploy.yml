@@ -34,10 +34,12 @@ jobs:
 
             - name: initialize terraform
               run: |
+                export TFSTATE_BUCKET=${{secrets.TFSTATE_TRACKER_BUCKET}}
+                export TFSTATE_REGION=${{secrets.INFRASTRCUTURE_REGION}}
                 terraform init \
-                    -backend-config="bucket=${{secrets.TFSTATE_TRACKER_BUCKET}}" \
+                    -backend-config="bucket=$TFSTATE_BUCKET" \
                     -backend-config="key=infra-2/terraform.tfstate" \
-                    -backend-config="region=${{secrets.INFRASTRCUTURE_REGION}}" \
+                    -backend-config="region=$TFSTATE_REGION" \
                     -backend-config="encrypt=true"
 
             - name: validate infra config syntax
