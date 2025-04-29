@@ -1,0 +1,62 @@
+
+
+
+name: Deploy infrastrcuture configuration and Application Code
+
+on:
+    pull_request:
+        branches:
+            - prod
+
+jobs:
+    deploy-infrastructure-configurations:
+        runs-on: ubuntu-24.04
+
+        defaults:
+            run:
+                working-directory: infrastructure
+
+        steps:
+            - name: clone GitHub repo to ubuntu machine
+              uses: actions/checkout@v4
+
+            - name: configure aws credentials
+              uses: aws-actions/configure-aws-credentials@v3
+              with:
+                aws-access-key-id: ${{secrets.DEVELOPER_ACCESS_KEY}}
+                aws-secret-access-key: ${{secrets.DEVELOPER_SECRET_ACCESS_KEY}}
+                aws-region: ${{secrets.INFRASTRCUTURE_REGION}}
+
+            - name: setup terraform
+              uses: hashicorp/setup-terraform@v3
+              with:
+                terraform_version: 1.9.5
+
+            - name: initialize terraform
+              run: |
+                export TFSTATE_BUCKET=${{secrets.TFSTATE_TRACKER_BUCKET}}
+                export TFSTATE_REGION=${{secrets.INFRASTRCUTURE_REGION}}
+
+                terraform init \
+                  -backend-config="bucket=$TFSTATE_BUCKET" \
+                  -backend-config="key=infra-2/terraform.tfstate" \
+                  -backend-config="region=$TFSTATE_REGION" \
+                  -backend-config="encrypt=true"
+
+            - name: validate infra config syntax
+              run: terraform validate
+
+            - name: plan and check changes
+              run: |
+                terraform plan \
+                    -var="pipeline_region=${{secrets.INFRASTRCUTURE_REGION}}" \
+                    -var="data_lake=${{secrets.ANIME_DATA_LAKE_BUCKET}}"
+
+            - name: deploy infra configurations
+              run: |
+                terraform apply --auto-approve \
+                    -var="pipeline_region=${{secrets.INFRASTRCUTURE_REGION}}" \
+                    -var="data_lake=${{secrets.ANIME_DATA_LAKE_BUCKET}}"
+
+
+            
