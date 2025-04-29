@@ -30,7 +30,6 @@ def divide_dataframe():
         dim_studio_df = clean_df[['studio_id', 'studio_name']].drop_duplicates(subset=['studio_id', 'studio_name']).dropna(how='any') # DATAFRAME STUDIO TABLE
         ##########################################
 
-
     except Exception as e:
         raise Exception(f'something unexpected went wrong: {e}')
     

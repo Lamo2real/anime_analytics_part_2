@@ -12,8 +12,8 @@ CREATE TABLE IF NOT EXISTS fact_anime (
     score DECIMAL(2,1) NOT NULL,
     aired_from DATE NOT NULL,
     aired_to DATE,
-    is_current BOOLEAN,
-    validated BOOLEAN,
+    is_current BOOLEAN NOT NULL,
+    validated BOOLEAN NOT NULL,
     timestamp_loaded DATE NOT NULL,
     FOREIGN KEY (studio_id) REFERENCES dim_studio(studio_id)
 );
