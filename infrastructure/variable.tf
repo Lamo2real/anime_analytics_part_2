@@ -12,6 +12,7 @@ variable "data_lake" {
 }
 
 variable "secrets_manager" {
+  default = "secret-variables/anime-analytics"
   description = "this is the name of etl secrets manager repo"
   type = string
   sensitive = true
