@@ -1,6 +1,5 @@
 import pandas as pd 
 from datetime import datetime
-
 from extract_data_s3 import s3_data_extract
 from snowflake_data_load import load_data_to_snoflake
 
