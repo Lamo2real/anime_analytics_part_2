@@ -69,7 +69,7 @@ python3 -m venv etl_venv
 
 `linux`
 ```bash
-source venv/bin/activate
+source etl_venv/bin/activate
 ```
 </br>
 
