@@ -48,7 +48,7 @@ jobs:
 
             - name: plan and check changes
               run: |
-                echo '${{secrets.SNOWFLAKE_DB_CREDENTIALS}}'' > db_creds.json
+                echo '${{secrets.SNOWFLAKE_DB_CREDENTIALS}}' > db_creds.json
                 terraform apply --auto-approve \
                     -var="pipeline_region=${{secrets.INFRASTRCUTURE_REGION}}" \
                     -var="data_lake=${{secrets.ANIME_DATA_LAKE_BUCKET}}" \
@@ -57,7 +57,7 @@ jobs:
 
             - name: deploy infra configurations
               run: |
-                echo '${{secrets.SNOWFLAKE_DB_CREDENTIALS}}'' > db_creds.json
+                echo '${{secrets.SNOWFLAKE_DB_CREDENTIALS}}' > db_creds.json
                 terraform apply --auto-approve \
                     -var="pipeline_region=${{secrets.INFRASTRCUTURE_REGION}}" \
                     -var="data_lake=${{secrets.ANIME_DATA_LAKE_BUCKET}}" \
