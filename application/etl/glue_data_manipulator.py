@@ -1,6 +1,5 @@
 import pandas as pd 
 from datetime import datetime
-
 from extract_data_s3 import s3_data_extract
 from snowflake_data_load import load_data_to_snoflake
 
@@ -34,6 +33,7 @@ def divide_dataframe():
         raise Exception(f'something unexpected went wrong: {e}')
     
     try:
+        
         #load to database
         load_data_to_snoflake(dim_genre_df, dim_studio_df, fact_anime_df, bridge_anime_genre_df)
     except FileNotFoundError as fnfe:
@@ -46,7 +46,7 @@ def bridge_anime_and_genre(df) -> pd.DataFrame:
     """concat the genres cilumns from 6 columns into 2 ('genre_id' & 'genre_name')"""
     try:
         return pd.DataFrame({
-            'anime_id': pd.concat([df['anime_id'], df['anime_id'], df['anime_id']]),
+            'anime_id': pd.concat([df['anime_id'], df['anime_id'], df['anime_id']]), # could use melt() but this keeps consistency
             'genre_id': pd.concat([df['genre_id_1'], df['genre_id_2'], df['genre_id_3']])
         }).drop_duplicates(subset=['anime_id', 'genre_id'], keep='first').dropna(how='any')
 

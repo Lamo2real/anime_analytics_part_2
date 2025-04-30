@@ -1,32 +1,36 @@
 import os
 import snowflake.connector
+from botocore.exceptions import ClientError
+from pathlib import Path
 from snowflake.connector.errors import DatabaseError, InterfaceError
-from dotenv import load_dotenv
+from application.etl.get_secrets import get_secrets_manager_values
+
 
 def db_migrate():
     """connect to snowflake database and run database migration script"""
-
     try:
-        load_dotenv()
-        sf_cred = {
-            'account': os.environ.get('ACCOUNT'),
-            'user': os.environ.get('USER'),
-            'password': os.environ.get('PASSWORD'),
-            'role': os.environ.get('ROLE')
-        }
-        if None in sf_cred.values():
-            raise ValueError(f'either its a wrong value in the creds or missing value/s')
+        secrets = get_secrets_manager_values()
+    except ModuleNotFoundError as mnfe:
+        raise mnfe
+    except ImportError as ie:
+        raise ie
     
+    try:
+        if None in secrets.values():
+            raise ValueError(f'either its a wrong value in the creds or missing value/s')
+        
+    except ClientError as ce:
+        raise ce
     except Exception as e:
         print(f'could not find file or something unexpected: {e}')
         raise e
 
     try:
         connection = snowflake.connector.connect(
-                account = sf_cred['account'],
-                user = sf_cred['user'],
-                password = sf_cred['password'],
-                role = sf_cred['role']
+                account  = secrets['ACCOUNT'],
+                user     = secrets['USER'],
+                password = secrets['PASSWORD'],
+                role     = secrets['ROLE']
             )
         cursor = connection.cursor()
         print(f'successful connection to snowflake')
@@ -46,7 +50,7 @@ def db_migrate():
 
     
     try:
-        sql_directory = 'sql'
+        sql_directory = Path(__file__).resolve().parent / 'sql'
         for sql_file in sorted(os.listdir(sql_directory)):
             if sql_file.endswith('.sql'):
                 print(f'executing {sql_file}')
@@ -56,8 +60,8 @@ def db_migrate():
           
 
     except FileNotFoundError as fnfe:
-        print(f'error caught when trying to find SQL files: {e}')
-        raise e
+        print(f'error caught when trying to find SQL files: {fnfe}')
+        raise fnfe
 
     except Exception as e:
         print(f'unexpected error: {e}')
