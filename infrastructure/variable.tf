@@ -19,6 +19,6 @@ variable "secrets_manager" {
 }
 variable "secrets_manager_db_credentials" {
   description = "this is the name of etl secrets manager database CREDENTIAL"
-  type = map(string) #
+  type = map(string) #this is the structure it expects: {"key1":"value1", "key2": "value2", "key3": "value3", "key4": "value4"}
   sensitive = true
 }
