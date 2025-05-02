@@ -1,4 +1,4 @@
 
 
 
-use database anime_analytics_db;
+USE DATABASE ANIME_ANALYTICS_DB;

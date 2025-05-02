@@ -1,7 +1,6 @@
 import boto3
 from botocore.exceptions import ClientError
 import pandas as pd
-import os
 
 from get_secrets import get_secrets_manager_values
 

@@ -1,9 +1,9 @@
 
 import pandas as pd
 import snowflake.connector
-from snowflake.connector.error import DatabaseError, InterfaceError
+from snowflake.connector.errors import DatabaseError, InterfaceError
 from get_secrets import get_secrets_manager_values
-from snoflake.connector.pandas_tools import write_pandas as wp
+from snowflake.connector.pandas_tools import write_pandas as wp
 
 def load_data_to_snoflake(genre_df, studio_df, anime_df, bridge_df):
     """
@@ -22,19 +22,20 @@ def load_data_to_snoflake(genre_df, studio_df, anime_df, bridge_df):
                 password  = secrets['PASSWORD'],
                 account   = secrets['ACCOUNT'],
                 role      = secrets['ROLE'],
-                warehouse = 'anime_analytics_wh',
-                database  = 'anime_analytics_db',
-                schema    = 'analytics'
+                warehouse = 'ANIME_ANALYTICS_WH',
+                database  = 'ANIME_ANALYTICS_DB',
+                schema    = 'ANALYTICS'
                 )
         
         all_dataframes = [
-                (genre_df, 'dim_genre'),
-                (studio_df, 'dim_studio'),
-                (anime_df, 'fact_anime'),
-                (bridge_df, 'bridge_genre_anime')
+                (genre_df, 'DIM_GENRE'),
+                (studio_df, 'DIM_STUDIO'),
+                (anime_df, 'FACT_ANIME'),
+                (bridge_df, 'BRIDGE_ANIME_GENRE')
         ]
 
         for df, db_table in all_dataframes:
+            df = df.reset_index(drop=True)
             wp(snowpy_con, df, table_name=db_table)
         
     except DatabaseError as dbe:

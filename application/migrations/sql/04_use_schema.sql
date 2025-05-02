@@ -1,4 +1,4 @@
 
 
 
-use schema anime_analytics_db.analytics;
+USE SCHEMA ANIME_ANALYTICS_DB.ANALYTICS;

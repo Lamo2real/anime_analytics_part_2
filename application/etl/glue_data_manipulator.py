@@ -2,7 +2,7 @@ import pandas as pd
 from datetime import datetime
 from extract_data_s3 import s3_data_extract
 from snowflake_data_load import load_data_to_snoflake
-
+from check_attribute import check_attribute_length
 
 def divide_dataframe():
     """create three dataframes of the one big table from S3 data lake"""
@@ -12,28 +12,30 @@ def divide_dataframe():
 
         ######### TRANSFORM DATA ##############
         clean_df = data_type_converter(raw_df)
-        clean_df.insert(loc=7, column='is_current', value=clean_df['aired_to'].isna()) 
-        dim_genre_df = clean_genre_name_and_id(clean_df)         # DATAFRAME GENRE TABLE
-        bridge_anime_genre_df = bridge_anime_and_genre(clean_df) # DATAFRAME BRIDGE TABLE
+        managed_df = check_attribute_length(clean_df)
+        managed_df.insert(loc=7, column='is_current', value=managed_df['aired_to'].isna()) 
+        dim_genre_df = clean_genre_name_and_id(managed_df)         # DATAFRAME GENRE TABLE
+        bridge_anime_genre_df = bridge_anime_and_genre(managed_df) # DATAFRAME BRIDGE TABLE
 
-        clean_df['timestamp'] = datetime.now().strftime('%Y-%m-%d')
+        managed_df['timestamp_loaded'] = datetime.now().strftime('%Y-%m-%d')
         
-        fact_anime_df = clean_df[[ # DATAFRAME FACT TABLE
+        fact_anime_df = managed_df[[ # DATAFRAME FACT TABLE
             'anime_id', 'studio_id', 'title',
             'duration', 'episodes', 'score',
             'aired_from', 'aired_to', 'is_current',
-            'validated', 'timestamp']] \
+            'validated', 'timestamp_loaded']] \
                 .drop_duplicates(subset=['anime_id', 'studio_id', 'title', 'aired_to']) \
                 .dropna(subset=['anime_id', 'studio_id', 'title', 'duration', 'episodes','score', 'aired_from', 'is_current', 'validated'], how='any') 
         
-        dim_studio_df = clean_df[['studio_id', 'studio_name']].drop_duplicates(subset=['studio_id', 'studio_name']).dropna(how='any') # DATAFRAME STUDIO TABLE
+        dim_studio_df = managed_df[['studio_id', 'studio_name']].drop_duplicates(subset=['studio_id', 'studio_name']).dropna(how='any') # DATAFRAME STUDIO TABLE
         ##########################################
 
+        for each_df in [dim_genre_df, bridge_anime_genre_df, fact_anime_df, dim_studio_df]:
+            each_df.columns = [col.upper() for col in each_df.columns]
     except Exception as e:
         raise Exception(f'something unexpected went wrong: {e}')
     
     try:
-        
         #load to database
         load_data_to_snoflake(dim_genre_df, dim_studio_df, fact_anime_df, bridge_anime_genre_df)
     except FileNotFoundError as fnfe:
