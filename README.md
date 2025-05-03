@@ -33,6 +33,7 @@ this project is concluded of ETL from S3 to AWS Glue and loaded into Redshift
 
 ### Table of Contents
 1. [Start-up Package](#start-up-package)
+2. [Database Migration Script](#database-migration-script)
 
 </br>
 </br>
@@ -84,3 +85,15 @@ source etl_venv/bin/activate
 ```bash
 deactivate
 ```
+
+</br>
+</br>
+</br>
+
+## Database Migration Script
+
+when exexuting the creation of database schema make sure to be in the root directory (project root) and run:
+```bash
+python3 -m application.migrations.migration_db
+```
+**OBS:** `runnig this script will merely work if you are in the root directory`
