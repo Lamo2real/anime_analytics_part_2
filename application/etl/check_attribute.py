@@ -16,7 +16,7 @@ def check_attribute_length(cleaned_df) -> pd.DataFrame:
 
         condition = (cleaned_df['studio_name'].str.len() > 50) | (cleaned_df['title'].str.len() > 99)
         cleaned_df = cleaned_df[~condition]    #the '~' will make sure to keep the rows that followes the requirements
-
+        
         return cleaned_df
             
     except Exception as e:
