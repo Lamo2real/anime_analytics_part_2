@@ -4,7 +4,7 @@ from botocore.exceptions import ClientError
 import json
 
 def get_secrets_manager_values() -> dict:
-
+    """fetch data on AWS Secrets Manager secrets storad in a dictionary in the cloud and return it"""
     secret_repo_name = "secret-variables/anime-analytics"   # i have no solution yet for  
     secrets_repo_region_name = "eu-central-1"               # this except uploading 
                                                             # a json file to S3 for glue

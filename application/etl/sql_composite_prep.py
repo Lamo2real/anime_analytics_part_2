@@ -19,9 +19,20 @@ def create_composite_key(df, columns) -> pd.DataFrame:
     return df 
 
 def filter_new_rows(new_df, existing_df) -> pd.DataFrame:
+    """
+    return the records that are NOT (thanks to ~) in existing_df.
+    this means that if the new dataframe has the same composite key
+    in the database already as in the new upcoming dataframe from the datalake,
+    then dont return that record in the dataframe.
+    Only return the dataframes/records that does NOT match the existing dataframe. 
+    """
     return new_df[~new_df['COMPOSITE_KEY'].isin(existing_df['COMPOSITE_KEY'])].drop(columns=['COMPOSITE_KEY'])
 
 def get_snowflake_connection() -> SnowflakeConnection:
+    """
+    take the AWS Secrets Manager secrets and use them to
+    get access to Snowflake database.
+    """
     try:
         secrets = get_secrets_manager_values()
 
