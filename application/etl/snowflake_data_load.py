@@ -3,6 +3,8 @@ from snowflake.connector.errors import DatabaseError, InterfaceError
 from get_secrets import get_secrets_manager_values
 from snowflake.connector.pandas_tools import write_pandas as wp
 from sql_composite_prep import get_snowflake_connection
+
+
 def load_data_to_snoflake(genre_df, studio_df, anime_df, bridge_df):
     """
     use aws secrets manager secrets, fecth the secrets
@@ -16,7 +18,6 @@ def load_data_to_snoflake(genre_df, studio_df, anime_df, bridge_df):
         if None in secrets.values():
             raise KeyError
         snowpy_con = get_snowflake_connection()
-        
         all_dataframes = [
                 (genre_df, 'DIM_GENRE'),
                 (studio_df, 'DIM_STUDIO'),

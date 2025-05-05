@@ -24,6 +24,43 @@ def clean_genre_name_and_id(df) -> pd.DataFrame:
     
     except Exception as e:
         raise Exception(f'issue with concating columns: {e}')
+    
+def clean_null_and_duplicates(managed_df) -> pd.DataFrame:
+    """
+    drop all records that has duplicate combination of
+    values in the dataframe and drop Null values
+    """
+    try:
+        no_duplicate_df = managed_df[
+                [ # DATAFRAME FACT TABLE
+                    'anime_id', 'studio_id', 'title',
+                    'duration', 'episodes', 'score',
+                    'aired_from', 'aired_to', 'is_current',
+                    'validated', 'timestamp_loaded'
+                ]
+            ] \
+            .drop_duplicates(subset=['anime_id', 'studio_id', 'title', 'aired_to']) \
+            .dropna(subset=[
+                'anime_id', 'studio_id', 'title',
+                'duration', 'episodes','score',
+                'aired_from', 'is_current', 'validated'
+            ], how='any')
+        return no_duplicate_df
+    
+    except Exception as e:
+        raise e
+    
+def clean_dim_studio_df(df):
+
+    try:
+        clean_df = df[
+            ['studio_id', 'studio_name']
+            ].drop_duplicates(subset=['studio_id', 'studio_name']).dropna(how='any')
+        return clean_df
+    
+    except Exception as e:
+        raise e
+
 ###################################################
 
 

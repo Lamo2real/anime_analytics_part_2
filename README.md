@@ -1,5 +1,5 @@
 # anime_analytics_part_2
-this project is concluded of ETL from S3 to AWS Glue and loaded into Redshift
+this project is concluded of ETL from S3 to AWS Glue and loaded into Snowflake
 
 
 ```bash
@@ -39,9 +39,6 @@ this project is concluded of ETL from S3 to AWS Glue and loaded into Redshift
 </br>
 </br>
 </br>
-2024_04_22_add_customer_dim.sql
-2024_04_23_update_fact_sales.sql
-
 
 
 
@@ -91,9 +88,13 @@ deactivate
 </br>
 
 ## Database Migration Script
-
-when exexuting the creation of database schema make sure to be in the root directory (project root) and run:
+`Linux/MacOS` 
 ```bash
-python3 -m application.migrations.migration_db
+python3 migration_db.py
 ```
-**OBS:** `runnig this script will merely work if you are in the root directory`
+</br>
+
+`windows`
+```powershell
+python migration_db.py
+```

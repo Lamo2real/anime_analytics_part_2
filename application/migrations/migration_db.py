@@ -1,9 +1,11 @@
 import os
+import sys
 import snowflake.connector
 from botocore.exceptions import ClientError
 from pathlib import Path
 from snowflake.connector.errors import DatabaseError, InterfaceError
-from application.etl.get_secrets import get_secrets_manager_values
+sys.path.append('../') #with thjs yu can run this script locally and set up the database schema (it will change the current dir to ./application)
+from etl.get_secrets import get_secrets_manager_values
 
 
 def db_migrate():
