@@ -25,5 +25,10 @@ jobs:
         - name: install requirements
           run: pip install -r requirements.txt
 
-        - name: run unittests
-          run: PYTHONPATH=./application/tests pytest -v -s
+        - name: set python path
+          run: PYTHONPATH=. 
+
+        - name: unittests
+          run: |
+            cd ./application/tests
+            pytest -v -s
