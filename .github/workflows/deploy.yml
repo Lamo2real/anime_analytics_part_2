@@ -26,9 +26,7 @@ jobs:
           run: pip install -r requirements.txt
 
         - name: run unittests
-          run: |
-            cd ./application/tests
-            pytest -v -s
+          run: PYTHONPATH=./application pytest -v -s
 
   deploy-infrastructure-configurations:
     needs:  unittests
