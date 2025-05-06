@@ -12,6 +12,8 @@ jobs:
 
   unittests:
     runs-on: ubuntu-24.04
+    env:
+        PYTHONPATH: .
 
     steps:
         - uses: actions/checkout@v4
@@ -24,9 +26,6 @@ jobs:
 
         - name: install requirements
           run: pip install -r requirements.txt
-
-        - name: set python path
-          run: PYTHONPATH=. 
 
         - name: unittests
           run: |
