@@ -58,39 +58,42 @@ def main():
             existing_dim_studio_df = pd.read_sql(query['dim_studio_query'], snowpy_con)
             existing_fact_df = pd.read_sql(query['fact_anime_query'], snowpy_con)
             existing_bridge_df = pd.read_sql(query['bridge_query'], snowpy_con)
+            if existing_fact_df.empty:
+                load_data_to_snoflake(dim_genre_df, dim_studio_df, fact_anime_df, bridge_anime_genre_df)
+            
+            else:
+                ################# CREATING COMPOSITE KEYS #################
+                # ---- DIM GENRE TABLE ---- #
+                existing_dim_genre_df = create_composite_key(existing_dim_genre_df, ['GENRE_ID', 'GENRE_NAME'])
+                dim_genre_df = create_composite_key(dim_genre_df, ['GENRE_ID', 'GENRE_NAME'])
+                # ------------------------- #
 
-        ################# CREATING COMPOSITE KEYS #################
-        # ---- DIM GENRE TABLE ---- #
-        existing_dim_genre_df = create_composite_key(existing_dim_genre_df, ['GENRE_ID', 'GENRE_NAME'])
-        dim_genre_df = create_composite_key(dim_genre_df, ['GENRE_ID', 'GENRE_NAME'])
-        # ------------------------- #
+                # ---- DIM STUDIO TABLE --- #
+                existing_dim_studio_df = create_composite_key(existing_dim_studio_df, ['STUDIO_ID', 'STUDIO_NAME'])
+                dim_studio_df = create_composite_key(dim_studio_df, ['STUDIO_ID', 'STUDIO_NAME'])
+                # ------------------------- #
 
-        # ---- DIM STUDIO TABLE --- #
-        existing_dim_studio_df = create_composite_key(existing_dim_studio_df, ['STUDIO_ID', 'STUDIO_NAME'])
-        dim_studio_df = create_composite_key(dim_studio_df, ['STUDIO_ID', 'STUDIO_NAME'])
-        # ------------------------- #
+                # ------- FACT TABLE ------ #
+                existing_fact_df = create_composite_key(existing_fact_df, ['ANIME_ID', 'EPISODES', 'SCORE'])
+                fact_anime_df = create_composite_key(fact_anime_df, ['ANIME_ID', 'EPISODES', 'SCORE'])
+                # ------------------------- #
 
-        # ------- FACT TABLE ------ #
-        existing_fact_df = create_composite_key(existing_fact_df, ['ANIME_ID', 'EPISODES', 'SCORE'])
-        fact_anime_df = create_composite_key(fact_anime_df, ['ANIME_ID', 'EPISODES', 'SCORE'])
-        # ------------------------- #
+                # ------- BRIDGE TABLE----- #
+                existing_bridge_df = create_composite_key(existing_bridge_df, ['ANIME_ID', 'GENRE_ID'])
+                bridge_anime_genre_df = create_composite_key(bridge_anime_genre_df, ['ANIME_ID', 'GENRE_ID'])
+                # ------------------------- #
+                ###########################################################
 
-        # ------- BRIDGE TABLE----- #
-        existing_bridge_df = create_composite_key(existing_bridge_df, ['ANIME_ID', 'GENRE_ID'])
-        bridge_anime_genre_df = create_composite_key(bridge_anime_genre_df, ['ANIME_ID', 'GENRE_ID'])
-        # ------------------------- #
-        ###########################################################
+                ####### FILTER AND REMOVE EQUIVALENT COMPOSITE KEYS #######
+                filtered_dim_genre_df = filter_new_rows(dim_genre_df, existing_dim_genre_df)
+                filtered_dim_studio_df = filter_new_rows(dim_studio_df, existing_dim_studio_df)
+                filtered_fact_df = filter_new_rows(fact_anime_df, existing_fact_df)
+                filtered_bridge_df = filter_new_rows(bridge_anime_genre_df, existing_bridge_df)
+                ###########################################################
 
-        ####### FILTER AND REMOVE EQUIVALENT COMPOSITE KEYS #######
-        filtered_dim_genre_df = filter_new_rows(dim_genre_df, existing_dim_genre_df)
-        filtered_dim_studio_df = filter_new_rows(dim_studio_df, existing_dim_studio_df)
-        filtered_fact_df = filter_new_rows(fact_anime_df, existing_fact_df)
-        filtered_bridge_df = filter_new_rows(bridge_anime_genre_df, existing_bridge_df)
-        ###########################################################
-
-        ################### LOAD TO DATABSE #######################
-        load_data_to_snoflake(filtered_dim_genre_df, filtered_dim_studio_df, filtered_fact_df, filtered_bridge_df)
-        ###########################################################
+                ################### LOAD TO DATABSE #######################
+                load_data_to_snoflake(filtered_dim_genre_df, filtered_dim_studio_df, filtered_fact_df, filtered_bridge_df)
+                ###########################################################
 
     except FileNotFoundError as fnfe:
         logger.error(f'could not locate the file to load data into snowflake: {fnfe}', exc_info=True)

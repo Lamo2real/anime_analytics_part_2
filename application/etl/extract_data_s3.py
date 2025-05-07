@@ -43,7 +43,6 @@ def fetch_s3_dataframe(bucket_name, file_path) -> pd.DataFrame:
         if file:
             data = file['Body']
             dataframe = pd.read_csv(data)
-            logger.info('successfully extracted data from S3')
             return dataframe
 
     except ClientError as ce:
