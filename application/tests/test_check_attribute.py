@@ -1,10 +1,9 @@
-
+from unittest.mock import MagicMock
 import sys
+sys.modules['logger_setup'] = MagicMock()
 sys.path.append('../')
 from mock_dataframes import clean_mock_df
-
 from etl.check_attribute import check_attribute_length
-
 
 def test_check_attribute_length(clean_mock_df):
     

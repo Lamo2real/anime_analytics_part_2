@@ -1,6 +1,7 @@
-
-import pandas as pd
+from unittest.mock import MagicMock
 import sys
+sys.modules['logger_setup'] = MagicMock()
+import pandas as pd
 from datetime import datetime
 sys.path.append('../')
 from etl.dataframe_cleaning import data_type_converter, bridge_anime_and_genre, clean_genre_name_and_id, clean_null_and_duplicates, clean_dim_studio_df
@@ -8,7 +9,7 @@ from mock_dataframes import raw_mock_df, managed_mock_df
 
 
 def test_data_type_converter(raw_mock_df):
-
+    
     df = data_type_converter(raw_mock_df)
     assert isinstance(df, pd.DataFrame)
     for col in ['episodes', 'duration', 'studio_id', 'genre_id_1', 'genre_id_2', 'genre_id_3']:

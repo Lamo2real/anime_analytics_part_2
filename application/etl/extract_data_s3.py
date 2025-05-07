@@ -1,16 +1,13 @@
 import boto3
 from botocore.exceptions import ClientError
 import pandas as pd
-# import logging
 from get_secrets import get_secrets_manager_values
+import logging
+from logger_setup import setup_logger
+setup_logger()
 
-# logging.basicConfig(
-#     level=logging.INFO,
-#     format='%(asctime)s %(levelname)s %(message)s',
-#     datefmt='%Y-%m-%d %H:%M',
-#     filename='etl-pipeline-logs.log'
-# )
 
+logger = logging.getLogger(__name__)
 
 def s3_data_extract() -> pd.DataFrame:
     """
@@ -23,13 +20,14 @@ def s3_data_extract() -> pd.DataFrame:
         return fetch_s3_dataframe(secrets['BUCKET_NAME'], secrets['FILE_PATH'])
     
     except FileNotFoundError as fnfe:
-        print(f'could not find the file to get secrets')
-        raise fnfe
+        logger.error(f'could not find the file to get secrets: {fnfe}', exc_info=True)
+        raise 
     except ImportError as ie:
-        print(f'could not import the secrets file')
-        raise ie
+        logger.error(f'could not import the secrets file: {ie}', exc_info=True)
+        raise 
     except Exception as e:
-        print(f'something unexpected went wrong {e}')
+        logger.critical(f'something unexpected went wrong {e}', exc_info=True)
+        raise
     
 
     
@@ -45,13 +43,14 @@ def fetch_s3_dataframe(bucket_name, file_path) -> pd.DataFrame:
         if file:
             data = file['Body']
             dataframe = pd.read_csv(data)
+            logger.info('successfully extracted data from S3')
             return dataframe
 
     except ClientError as ce:
-        raise ClientError(f'could not connect or other issues with s3 client: {ce}')
+        logger.error(f'could not connect or other issues with s3 client: {ce}', exc_info=True)
+        raise
     except Exception as e:
-        raise Exception(f'something else went wrong: {e}')
+        logger.critical(f'something else went wrong: {e}', exc_info=True)
+        raise
         
 
-if __name__ == '__main__':
-    s3_data_extract()
