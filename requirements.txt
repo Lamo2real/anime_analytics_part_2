@@ -2,4 +2,4 @@ snowflake-connector-python>=3.14.1
 python-dotenv>=1.1.0
 boto3>=1.38.2
 snowflake-connector-python[pandas]
-
+pytest>=8.3.5

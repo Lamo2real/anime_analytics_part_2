@@ -2,4 +2,6 @@ etl_venv
 *.env
 *.csv
 *__pycache__
+*.pytest*
 *.terraform*
+*.log

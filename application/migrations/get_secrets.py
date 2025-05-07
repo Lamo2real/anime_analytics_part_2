@@ -2,11 +2,7 @@
 import boto3
 from botocore.exceptions import ClientError
 import json
-import logging
-from logger_setup import setup_logger
-setup_logger()
 
-logger = logging.getLogger(__name__)
 
 
 def get_secrets_manager_values() -> dict:
@@ -23,10 +19,10 @@ def get_secrets_manager_values() -> dict:
             region_name=secrets_repo_region_name
         )
     except ClientError as ce:
-        logger.critical(f'could not connect to boto3 client: {ce}', exc_info=True)
+        print(f'could not connect to boto3 client: {ce}', exc_info=True)
         raise
     except Exception as e:
-        logger.critical(f'unexpected error: {ce}', exc_info=True)
+        print(f'unexpected error: {ce}', exc_info=True)
         raise
 
 
@@ -39,10 +35,10 @@ def get_secrets_manager_values() -> dict:
         return json_secret
 
     except ClientError as ce:
-        logger.critical(f'could not find any secrets as key-value stored in secrets-manager: {ce}', exc_info=True)
+        print(f'could not find any secrets as key-value stored in secrets-manager: {ce}', exc_info=True)
         raise 
     except Exception as e:
-        logger.critical(f'unexpected error: {ce}', exc_info=True)
+        print(f'unexpected error: {ce}', exc_info=True)
         raise
     
 

@@ -1,5 +1,5 @@
 # anime_analytics_part_2
-this project is concluded of ETL from S3 to AWS Glue and loaded into Redshift
+this project is concluded of ETL from S3 to AWS Glue and loaded into Snowflake
 
 
 ```bash
@@ -33,14 +33,12 @@ this project is concluded of ETL from S3 to AWS Glue and loaded into Redshift
 
 ### Table of Contents
 1. [Start-up Package](#start-up-package)
+2. [Database Migration Script](#database-migration-script)
 
 </br>
 </br>
 </br>
 </br>
-2024_04_22_add_customer_dim.sql
-2024_04_23_update_fact_sales.sql
-
 
 
 
@@ -83,4 +81,20 @@ source etl_venv/bin/activate
 **deactivate/escape environment**
 ```bash
 deactivate
+```
+
+</br>
+</br>
+</br>
+
+## Database Migration Script
+`Linux/MacOS` 
+```bash
+python3 migration_db.py
+```
+</br>
+
+`windows`
+```powershell
+python migration_db.py
 ```

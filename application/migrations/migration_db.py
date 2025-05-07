@@ -1,9 +1,10 @@
 import os
+import sys
 import snowflake.connector
 from botocore.exceptions import ClientError
 from pathlib import Path
 from snowflake.connector.errors import DatabaseError, InterfaceError
-from application.etl.get_secrets import get_secrets_manager_values
+from get_secrets import get_secrets_manager_values
 
 
 def db_migrate():
