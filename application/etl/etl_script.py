@@ -1,4 +1,7 @@
+
+import logging
 import pandas as pd 
+import warnings
 from datetime import datetime
 from extract_data_s3 import s3_data_extract
 from snowflake_data_load import load_data_to_snoflake
@@ -6,6 +9,13 @@ from check_attribute import check_attribute_length
 from sql_composite_prep import queries, get_snowflake_connection, create_composite_key, filter_new_rows
 from dataframe_cleaning import bridge_anime_and_genre, clean_genre_name_and_id, data_type_converter, clean_null_and_duplicates, clean_dim_studio_df
 
+logging.basicConfig(
+    filename='etl-pipeline-inspection.log',
+    filemode='a',
+    format='%(asctime)s - %(levelname)s - %(funcName)s:%(lineo)d - %(message)s',
+    level=logging.DEBUG
+)
+logger = logging.getLogger(__name__)
 
 
 def main():
@@ -31,7 +41,7 @@ def main():
             each_df.columns = [col.upper() for col in each_df.columns]
 
     except Exception as e:
-        raise Exception(f'something unexpected went wrong: {e}')
+        logger.critical(f'something unexpected went wrong: {e}', exc_info=True)
 
     try:
         ##### CONNECT TO SNOWFLAKE #####
@@ -39,11 +49,13 @@ def main():
 
         ##### DATABASE QUERIES #####
         query = queries() #this  has all queries stored as a dictionary
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", UserWarning)
 
-        existing_dim_genre_df = pd.read_sql(query['dim_genre_query'], snowpy_con)
-        existing_dim_studio_df = pd.read_sql(query['dim_studio_query'], snowpy_con)
-        existing_fact_df = pd.read_sql(query['fact_anime_query'], snowpy_con)
-        existing_bridge_df = pd.read_sql(query['bridge_query'], snowpy_con)
+            existing_dim_genre_df = pd.read_sql(query['dim_genre_query'], snowpy_con)
+            existing_dim_studio_df = pd.read_sql(query['dim_studio_query'], snowpy_con)
+            existing_fact_df = pd.read_sql(query['fact_anime_query'], snowpy_con)
+            existing_bridge_df = pd.read_sql(query['bridge_query'], snowpy_con)
 
         ################# CREATING COMPOSITE KEYS ################
         # ---- DIM GENRE TABLE ---- #

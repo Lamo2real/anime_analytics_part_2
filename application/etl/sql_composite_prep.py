@@ -4,6 +4,7 @@ from get_secrets import get_secrets_manager_values
 import snowflake.connector
 import pandas as pd
 
+
 def queries() -> dict:
     """return all quewries needed for read_sql"""
     return {
