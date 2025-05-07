@@ -12,19 +12,23 @@ def db_migrate():
     try:
         secrets = get_secrets_manager_values()
     except ModuleNotFoundError as mnfe:
-        raise mnfe
+        print(f'could not find module that doesnt exist: {mnfe}')
+        raise 
     except ImportError as ie:
-        raise ie
+        print(ie)
+        raise 
     
     try:
         if None in secrets.values():
-            raise ValueError(f'either its a wrong value in the creds or missing value/s')
+            print(f'either its a wrong value in the creds or missing value/s: {ValueError}')
+            raise 
         
     except ClientError as ce:
-        raise ce
+        print(f'something went wrong with the AWS cloud aspect: {ce}')
+        raise 
     except Exception as e:
         print(f'could not find file or something unexpected: {e}')
-        raise e
+        raise 
 
     try:
         connection = snowflake.connector.connect(
