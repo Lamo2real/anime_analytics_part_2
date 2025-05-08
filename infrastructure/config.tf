@@ -31,7 +31,7 @@ module "parent_vars_to_security" {
   
   region                   = var.pipeline_region 
   path_to_secrets          = var.secrets_manager_path
-  aws_accound_id           = var.account_id
+  aws_account_id           = var.account_id
   data_lake_bucket_name    = var.data_lake
   secrets_manager_name     = var.secrets_manager
   security_snowflake_creds = var.secrets_manager_db_credentials
