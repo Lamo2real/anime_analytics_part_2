@@ -32,8 +32,8 @@ resource "aws_iam_role_policy" "glue_iam_role_policy" {
                     "s3:ListBucket"
                 ]
                 Resource = [
-                    "arn:aws:s3::${var.data_lake_bucket_name}/*",
-                    "arn:aws:s3::${var.data_lake_bucket_name}"
+                    "arn:aws:s3:::${var.data_lake_bucket_name}/*",
+                    "arn:aws:s3:::${var.data_lake_bucket_name}"
                 ]
             },
             {
@@ -50,7 +50,7 @@ resource "aws_iam_role_policy" "glue_iam_role_policy" {
                 Sid = "GetSecretsManagerAccess"
                 Effect = "Allow"
                 Action = "secretsmanager:GetSecretValue"
-                Resource = "arn:aws:secretsmanager:${var.region}:${var.aws_accound_id}:secret:secret-variables/${var.path_to_secrets}"
+                Resource = "arn:aws:secretsmanager:${var.region}:${var.aws_account_id}:secret:secret-variables/${var.path_to_secrets}"
             }
         ]
     })

@@ -21,7 +21,7 @@ variable "data_lake_bucket_name" {
   type = string
   sensitive = true
 }
-variable "aws_accound_id" {
+variable "aws_account_id" {
   type = string
   sensitive = true
 }
