@@ -88,13 +88,4 @@ deactivate
 </br>
 
 ## Database Migration Script
-`Linux/MacOS` 
-```bash
-python3 migration_db.py
-```
-</br>
-
-`windows`
-```powershell
-python migration_db.py
-```
+#### Read the README in `./application/migrations/` directory
