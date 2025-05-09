@@ -3,19 +3,16 @@
 resource "aws_glue_job" "et_job" {
     name = "glue-etl-anime-analytics-ingestion"
     role_arn = var.glue_role_arn
-
-    number_of_workers = 2
-    worker_type = "G.1X"
+    max_capacity = 1.0
 
     command {
-      name = "glueetl"
+      name = "pythonshell"
       script_location = "s3://${var.data_lake_bucket_name}/etl/etl_script.py"
+      python_version = "3"
     }
     
     default_arguments = {
-        "--job-language" = "python",
         "--additional-python-modules" = "snowflake-connector-python==3.14.1,pandas==2.2.3,boto3==1.38.2",
-        "--extra-py-files" = "s3://${var.data_lake_bucket_name}/etl/etl_package.zip",
-        "--enable-job-insights" = "true"
+        "--extra-py-files" = "s3://${var.data_lake_bucket_name}/etl/etl_package.zip"
     }
 }
