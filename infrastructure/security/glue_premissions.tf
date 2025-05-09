@@ -44,7 +44,7 @@ resource "aws_iam_role_policy" "glue_iam_role_policy" {
                 "logs:CreateLogStream",
                 "logs:PutLogEvents"
               ]
-              Resource = "arn:aws:logs:*:*:*"
+              Resource = "arn:aws:logs:${var.region}:${var.aws_account_id}:log-group:${var.glue_cw_name}"
             },
             {
                 Sid = "GetSecretsManagerAccess"

@@ -29,3 +29,8 @@ variable "path_to_secrets" {
   type = string
   sensitive = true
 }
+variable "glue_cw_name" {
+  description = "this is the name/path of the cloudwatch log group"
+  type = string
+  sensitive = true
+}
