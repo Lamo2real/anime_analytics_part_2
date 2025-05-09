@@ -5,3 +5,4 @@ etl_venv
 *.pytest*
 *.terraform*
 *.log
+*.zip

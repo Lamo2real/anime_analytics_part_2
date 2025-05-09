@@ -47,10 +47,12 @@ this project is concluded of ETL from S3 to AWS Glue and loaded into Snowflake
 when starting the project make sure to create a virtual envrironment in the root of the project directory as followed:
 
 - step 1:</br>
-**check your cuurent directory**
+**check your current directory**
 ```bash
 pwd
 ```
+
+
 make sure to be in the root ending with `**/anime_analytics_part_2`
 </br></br>
 
@@ -88,13 +90,4 @@ deactivate
 </br>
 
 ## Database Migration Script
-`Linux/MacOS` 
-```bash
-python3 migration_db.py
-```
-</br>
-
-`windows`
-```powershell
-python migration_db.py
-```
+#### Read the README in `./application/migrations/` directory
