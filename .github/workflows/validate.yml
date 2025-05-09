@@ -74,7 +74,7 @@ jobs:
           run: |
             echo '${{secrets.SNOWFLAKE_DB_CREDENTIALS}}' > db_creds.json
   
-            terraform apply --auto-approve \
+            terraform plan \
                 -var="pipeline_region=${{secrets.INFRASTRCUTURE_REGION}}" \
                 -var="data_lake=${{secrets.ANIME_DATA_LAKE_BUCKET}}" \
                 -var="secrets_manager_db_credentials=$(cat db_creds.json)" \
