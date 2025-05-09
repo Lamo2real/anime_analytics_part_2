@@ -6,25 +6,58 @@ this project is concluded of ETL from S3 to AWS Glue and loaded into Snowflake
 /etl-pipeline-repo/
 ├── .github/workflows/          # CI/CD automation
 ├──          ├── deploy.yaml
-├──          └── testing_script.yaml
-├── venv/ 
-├── etl/                        # ETL logic (e.g. Airflow DAGs, Glue scripts, etc.)
-│   └── jobs/
-├── infrastructure/             # Terraform/CDK/etc. for snowflake, S3, etc.
-├── migrations/                 # SQL or dbt-based migration scripts
-│   ├── migration_db.py
-│   ├── README.md
-│   └── sql/
-│        ├── 00_create_data_warehouse.sql
-│        ├── 01_create_database.sql
-│        ├── 02_use_database.sql
-│        ├── 03_create_schema.sql
-│        ├── 04_use_schema.sql
-│        ├── 05_create_dim_studio.sql
-│        ├── 06_create_dim_genre.sql
-│        ├── 07_create_fact_aniem.sql
-│        └── 08_create_bridge_anime_genre.sql
-├── tests/                      # Data quality or unit tests
+├──          └── validate.yaml
+├── etl_venv/ 
+├── application/                     # ETL logic (e.g. Airflow DAGs, Glue scripts, etc.)
+│     ├── etl/
+│     │    ├── check_attribute.py
+│     │    ├── dataframe_cleaning.py
+│     │    ├── etl_script.py
+│     │    ├── extract_data_s3.py
+│     │    ├── get_secrets.py
+│     │    ├── log_to_s3.py
+│     │    ├── logger_setup.py
+│     │    ├── snowflake_data_load.py
+│     │    └── sql_composite_prep.py
+│     │    
+│     ├── migrations/
+│     │    ├── get_secrets.py
+│     │    ├── migration_db.py
+│     │    ├── README.md
+│     │    └── sql/
+│     │         ├── 00_create_data_warehouse.sql
+│     │         ├── 01_create_database.sql
+│     │         ├── 02_use_database.sql
+│     │         ├── 03_create_schema.sql
+│     │         ├── 04_use_schema.sql
+│     │         ├── 05_create_dim_studio.sql
+│     │         ├── 06_create_dim_genre.sql
+│     │         ├── 07_create_fact_aniem.sql
+│     │         └── 08_create_bridge_anime_genre.sql
+│     │
+│     └──tests/ # Data quality or unit tests
+│          ├── mock_dataframe.py # it includes fixtures
+│          ├── test_check_attribute.py
+│          └── test_dataframe_cleaning.py
+│          
+├── infrastructure/
+│        ├── config.tf
+│        ├── variable.tf
+│        ├── glue/
+│        │    ├── data_lake_s3.tf
+│        │    ├── glue_job.tf
+│        │    └── variable.tf
+│        │
+│        ├── monitoring/
+│        │    ├── cw_logs.tf
+│        │    └── outputs.tf
+│        │
+│        └── security/
+│             ├── glue_permissions.tf
+│             ├── outputs.tf
+│             ├── secrets_manager.tf
+│             └── variable.tf
+│  
 ├── requirements.txt
 ├── .gitignore
 ├── LICENSE
@@ -34,6 +67,7 @@ this project is concluded of ETL from S3 to AWS Glue and loaded into Snowflake
 ### Table of Contents
 1. [Start-up Package](#start-up-package)
 2. [Database Migration Script](#database-migration-script)
+3. [ETL software](#etl-software)
 
 </br>
 </br>
