@@ -19,6 +19,7 @@ def main():
     """create three dataframes of the one big table from S3 data lake"""
 
     try:
+        logger.info('starting ETL pipeline')
         raw_df = s3_data_extract() # extract data 
 
         ######### TRANSFORM DATA ##############
