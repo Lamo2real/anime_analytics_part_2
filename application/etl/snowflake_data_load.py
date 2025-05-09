@@ -4,6 +4,7 @@ from snowflake.connector.pandas_tools import write_pandas as wp
 from sql_composite_prep import get_snowflake_connection
 import logging
 from logger_setup import setup_logger
+
 setup_logger()
 
 logger = logging.getLogger(__name__)
@@ -53,3 +54,4 @@ def load_data_to_snoflake(genre_df, studio_df, anime_df, bridge_df):
 
     finally:
         cursor.close()
+        
