@@ -4,6 +4,7 @@ from snowflake.connector.pandas_tools import write_pandas as wp
 from sql_composite_prep import get_snowflake_connection
 import logging
 from logger_setup import setup_logger
+
 setup_logger()
 
 logger = logging.getLogger(__name__)
@@ -39,8 +40,10 @@ def load_data_to_snoflake(genre_df, studio_df, anime_df, bridge_df):
         for df, db_table in all_dataframes:
             df = df.reset_index(drop=True)
             count_rows = len(df.index)
-            logger.info(f'{count_rows} were added to the {db_table} table')
+            logger.info(f'{count_rows} were added to the {db_table} table in snowflake')
             wp(snowpy_con, df, table_name=db_table)
+
+        logger.info('ending ETL pipeline successfully')
         
     except KeyError as ke:
         logger.error(f'could not find values in secrets manager: {ke}', exc_info=True)
@@ -51,4 +54,4 @@ def load_data_to_snoflake(genre_df, studio_df, anime_df, bridge_df):
 
     finally:
         cursor.close()
-
+        

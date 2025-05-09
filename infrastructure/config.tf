@@ -20,15 +20,20 @@ provider "aws" {
  # child directories (make sure to use the variables
  # here in a variables.tf file in the child directories elsewhere)
 module "parent_vars_to_glue" {
-  source = "./glue"
+  source                   = "./glue"
   
-  glue_role_arn = module.parent_vars_to_security.glue_iam_role_arn
-  data_lake_bucket_name = var.data_lake
+  glue_role_arn            = module.parent_vars_to_security.glue_iam_role_arn
+  data_lake_bucket_name    = var.data_lake
+}
+
+module "parent_vars_to_monitoring" {
+  source                   = "./monitoring"
 }
 
 module "parent_vars_to_security" {
-  source = "./security"
+  source                   = "./security"
   
+  glue_cw_name             = module.parent_vars_to_monitoring.cw_log_group_name
   region                   = var.pipeline_region 
   path_to_secrets          = var.secrets_manager_path
   aws_account_id           = var.account_id

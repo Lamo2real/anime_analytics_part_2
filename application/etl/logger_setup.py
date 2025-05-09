@@ -4,7 +4,8 @@
 import logging
 from datetime import datetime
 
-def setup_logger():
+def setup_logger() -> logging:
+    """setup logging and monitoring system for AWS CloudWatch Logs"""
 
     date = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
     logging.basicConfig(

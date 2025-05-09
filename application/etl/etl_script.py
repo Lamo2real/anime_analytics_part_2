@@ -10,6 +10,7 @@ from sql_composite_prep import queries, get_snowflake_connection, create_composi
 from dataframe_cleaning import bridge_anime_and_genre, clean_genre_name_and_id, data_type_converter, clean_null_and_duplicates, clean_dim_studio_df
 import logging
 from logger_setup import setup_logger
+from log_to_s3 import send_etl_logs
 setup_logger()
 
 logger = logging.getLogger(__name__)
@@ -19,6 +20,7 @@ def main():
     """create three dataframes of the one big table from S3 data lake"""
 
     try:
+        logger.info('starting ETL pipeline')
         raw_df = s3_data_extract() # extract data 
 
         ######### TRANSFORM DATA ##############
@@ -101,7 +103,9 @@ def main():
     except Exception as e:
         logger.critical(f'something else went wrong when wanting to load data into snowflake: {e}', exc_info=True)
         raise
-
+    
+    finally:
+        send_etl_logs()
 
 
 if __name__ == '__main__':
