@@ -11,7 +11,7 @@ resource "aws_glue_job" "et_job" {
     }
     
     default_arguments = {
-        "--additional-python-modules"   = "snowflake-connector-python==3.14.1,pandas==2.2.3,boto3==1.38.2",
+        "--additional-python-modules"   = "snowflake-connector-python==3.14.1,pandas==2.2.3,boto3==1.38.2,watchtower==3.4.0",
         "--extra-py-files"              = "s3://${var.data_lake_bucket_name}/etl/etl_package.zip",
         "--enable-job-insights"         = "true"
     }
