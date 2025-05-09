@@ -4,6 +4,9 @@ resource "aws_glue_job" "et_job" {
     name = "glue-etl-anime-analytics-ingestion"
     role_arn = var.glue_role_arn
 
+    number_of_workers = 2
+    worker_type = "G.1X"
+
     command {
       name = "glueetl"
       script_location = "s3://${var.data_lake_bucket_name}/etl/etl_script.py"
