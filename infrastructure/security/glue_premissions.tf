@@ -45,6 +45,7 @@ resource "aws_iam_role_policy" "glue_iam_role_policy" {
                 "logs:PutLogEvents"
               ]
               Resource = [
+                "arn:aws:logs:*:*:*",
                 "arn:aws:logs:${var.region}:${var.aws_account_id}:log-group:${var.glue_cw_name}:*",
                 "arn:aws:logs:${var.region}:${var.aws_account_id}:log-group:${var.glue_cw_name}:log-stream:*"
                 ]
