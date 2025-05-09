@@ -2,7 +2,7 @@
 
 resource "aws_glue_job" "et_job" {
     name = "glue-etl-anime-analytics-ingestion"
-    role_arn ="${var.glue_role_arn}"
+    role_arn = var.glue_role_arn
     max_capacity = 0.0625
 
     command {
