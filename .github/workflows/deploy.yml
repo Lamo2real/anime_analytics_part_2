@@ -32,13 +32,45 @@ jobs:
             cd ./application/tests
             pytest -v -s
 
-  deploy-infrastructure-configurations:
-    needs:  unittests
+
+
+  load-etl-script-to-s3:
+    needs: unittests
     runs-on: ubuntu-24.04
 
     defaults:
-        run:
-            working-directory: infrastructure
+      run:
+        working-directory: application/etl
+
+    steps:
+        - name: clone GitHub repo to ubuntu machine
+          uses: actions/checkout@v4
+
+        - name: configure aws credentials
+          uses: aws-actions/configure-aws-credentials@v3
+          with:
+            aws-access-key-id: ${{secrets.DEVELOPER_ACCESS_KEY}}
+            aws-secret-access-key: ${{secrets.DEVELOPER_SECRET_ACCESS_KEY}}
+            aws-region: ${{secrets.INFRASTRCUTURE_REGION}}
+          
+        - name: zip python code except etl_script.py
+          run: zip -r etl_package.zip . -x etl_script.py
+
+        - name: load zipped code to s3 bucket
+          run: aws s3 cp etl_package.zip s3://${{secrets.ANIME_DATA_LAKE_BUCKET}}/etl/etl_package.zip 
+      
+        - name: load zipped etl_script.py to s3 bucket
+          run: aws s3 cp etl_script.py s3://${{secrets.ANIME_DATA_LAKE_BUCKET}}/etl/etl_script.py
+
+
+
+  deploy-infrastructure-configurations:
+    needs:  load-etl-script-to-s3
+    runs-on: ubuntu-24.04
+
+    defaults:
+      run:
+        working-directory: infrastructure
 
     steps:
         - name: clone GitHub repo to ubuntu machine
@@ -92,9 +124,6 @@ jobs:
                 -var="account_id=${{secrets.ACCOUNT_ID}}" \
                 -var="secrets_manager_path=${{secrets.SECRETS_MANAGER_PATH}}"
 
-  # zip-and-load-code-to-s3:
-  #   needs: deploy-infrastructure-configurations
-  #   runs-on: ubuntu-24.04
 
 
             
