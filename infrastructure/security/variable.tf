@@ -49,3 +49,8 @@ variable "sns_topic_arn" {
   type = string
   sensitive = true
 }
+variable "orchestrator_step_function_arn" {
+  description = "this is the arn of the entire orchestration step function of the data pipeline"
+  type = string
+  sensitive = true
+}

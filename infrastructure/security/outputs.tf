@@ -8,3 +8,6 @@ output "step_func_role_arn" {
 output "stfu_extract_workflow" {
   value = data.aws_sfn_state_machine.sfn_extract_workflow.arn
 }
+output "eventbridge_role_arn" {
+  value = aws_iam_role.eventbridge_iam_role.arn
+}
