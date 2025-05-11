@@ -8,6 +8,6 @@ resource "aws_cloudwatch_event_rule" "monthly_sf_trigger" {
 
 resource "aws_cloudwatch_event_target" "monthly_sf_trigger_target" {
   rule = aws_cloudwatch_event_rule.monthly_sf_trigger.name
-  arn = var.data_pipeline_step_func_role_arn
+  arn = aws_sfn_state_machine.orchestrator.arn
   role_arn = var.event_iam_role_arn
 }
