@@ -16,7 +16,15 @@ resource "aws_sfn_state_machine" "orchestrator" {
                 Parameters = {
                     StateMachineArn = "${var.extract_sfn}"
                 }
-                ResultPath = "$.extractWorkflowResult"
+                ResultPath = "$.extractWorkflowResult"        
+                Retry = [
+                  {
+                    ErrorEquals = ["Lambda.AWSLambdaException"]
+                    IntervalSeconds = 2
+                    MaxAttempts = 3
+                    BackoffRate = 2.0
+                  }
+                ]
                 Catch = [
                     {
                         ErrorEquals = ["States.ALL"]
