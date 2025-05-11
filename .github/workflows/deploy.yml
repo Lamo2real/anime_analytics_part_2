@@ -102,6 +102,9 @@ jobs:
         - name: validate infra config syntax
           run: terraform validate
 
+        - name: format the infra code
+          run: terraform fmt --recursive
+
         - name: plan and check changes
           run: |
             echo '${{secrets.SNOWFLAKE_DB_CREDENTIALS}}' > db_creds.json

@@ -32,3 +32,9 @@ variable "secrets_manager_path" {
   type = string
   sensitive = true
 }
+variable "sfn_data_extract_name" {
+  default = "state-machine-step-function"
+  description = "this is the name of the step function from part 1 repository"
+  type = string
+  sensitive = true
+}

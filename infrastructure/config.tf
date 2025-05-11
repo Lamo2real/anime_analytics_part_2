@@ -32,7 +32,10 @@ module "parent_vars_to_monitoring" {
 
 module "parent_vars_to_security" {
   source                   = "./security"
-  
+
+  sns_topic_arn            = module.parent_vars_to_monitoring.sns_email_topic_arn
+  glue_job_arn             = module.parent_vars_to_glue.glue_arn
+  sfn_part_1               = var.sfn_data_extract_name
   glue_cw_name             = module.parent_vars_to_monitoring.cw_log_group_name
   region                   = var.pipeline_region 
   path_to_secrets          = var.secrets_manager_path
@@ -40,5 +43,14 @@ module "parent_vars_to_security" {
   data_lake_bucket_name    = var.data_lake
   secrets_manager_name     = var.secrets_manager
   security_snowflake_creds = var.secrets_manager_db_credentials
+}
+
+module "parent_to_orchestration" {
+  source = "./orchestration"
+
+  sns_arn                          = module.parent_vars_to_monitoring.sns_email_topic_arn
+  glue_job_name                    = module.parent_vars_to_glue.glue_name
+  extract_sfn                      = module.parent_vars_to_security.stfu_extract_workflow
+  data_pipeline_step_func_role_arn = module.parent_vars_to_security.step_func_role_arn
 }
 
