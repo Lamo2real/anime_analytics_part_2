@@ -52,6 +52,18 @@ resource "aws_iam_role_policy" "step_func_role_policy" {
             Effect = "Allow"
             Action = "sns:Publish"
             Resource = "${var.sns_topic_arn}"
+        },
+        {
+          Sid = "AllowAccessToManagedEvents"
+          Effect = "Allow"
+          Action = [
+            "events:PutRule",
+            "events:PutTargets",
+            "events:DescribeRule",
+            "events:DeleteRule",
+            "events:RemoveTargets"
+          ]
+          Resource = "arn:aws:events:${var.region}:${var.aws_account_id}:rule/StepFunctionsGetEventsForStepFunctionsExecutionRule*"
         }
     ]
   })
