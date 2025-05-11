@@ -237,9 +237,23 @@ pytest -v -s
 ```
 *you must be inside `./tests` directory*
 
+
+
+
+
+
+
+
 </br>
 </br>
 </br>
+
+
+
+
+
+
+
 
 ## Infrastructure
 
@@ -275,3 +289,32 @@ pytest -v -s
 | `secrets_manager.tf`          | Creates Secrets Manager secret and stores Snowflake credentials |
 | `step_func_permissions.tf`    | Configures IAM role and policies for Step Functions to access Glue, SNS, and EventBridge |
 | `variable.tf`                 | Declares sensitive variables for AWS resources, credentials, and configurations |
+
+</br>
+</br>
+</br>
+
+
+## Images
+
+#### Solution Architecture
+![data Pipeline](images/anime_analytics_solution_architecture.png)
+
+</br>
+</br>
+
+#### Data model (physical)
+![data Pipeline](images/data-model-anime-analytics.png)
+
+
+
+
+
+</br>
+</br>
+</br>
+
+
+
+#### Data Orchestration Workflow
+![data Pipeline](images/step_function_workflow.png)
