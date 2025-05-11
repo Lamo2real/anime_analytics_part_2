@@ -11,8 +11,8 @@ resource "aws_iam_role" "step_func_role" {
     Statement = [
         {
             Sid = "StepFunctionsFullDataPipelineIAMRole"
-            Action = "sts:AssumeRole"
             Effect = "Allow"
+            Action = "sts:AssumeRole"
             Principal = {
                 Service = "states.amazonaws.com"
             }

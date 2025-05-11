@@ -19,3 +19,8 @@ variable "sns_arn" {
   type = string
   sensitive = true
 }
+variable "event_iam_role_arn" {
+  description = "this is the arn of the Eventbridge IAM Role: ./security/eventbridge_permissions.tf"
+  type = string
+  sensitive = true
+}
