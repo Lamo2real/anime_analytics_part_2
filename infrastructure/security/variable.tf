@@ -34,3 +34,18 @@ variable "glue_cw_name" {
   type = string
   sensitive = true
 }
+variable "sfn_part_1" {
+  description = "this is the name of the workflow in part 1 (step functions for extracting data)"
+  type = string
+  sensitive = true
+}
+variable "glue_job_arn" {
+  description = "this is the aws glue job arn"
+  type = string
+  sensitive = true
+}
+variable "sns_topic_arn" {
+  description = "this is the aws glue job arn"
+  type = string
+  sensitive = true
+}

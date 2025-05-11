@@ -32,3 +32,8 @@ variable "secrets_manager_path" {
   type = string
   sensitive = true
 }
+variable "sfn_data_extract_name" {
+  description = "this is the name of the lamba function from part 1 repository"
+  type = string
+  sensitive = true
+}

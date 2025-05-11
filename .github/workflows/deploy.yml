@@ -111,7 +111,8 @@ jobs:
                 -var="data_lake=${{secrets.ANIME_DATA_LAKE_BUCKET}}" \
                 -var="secrets_manager_db_credentials=$(cat db_creds.json)" \
                 -var="account_id=${{secrets.ACCOUNT_ID}}" \
-                -var="secrets_manager_path=${{secrets.SECRETS_MANAGER_PATH}}"
+                -var="secrets_manager_path=${{secrets.SECRETS_MANAGER_PATH}}" \
+                -var="sfn_data_extract_name=${{secrets.SFN_PART_ONE_WORKFLOW}}"
 
         - name: deploy infra configurations
           run: |
@@ -122,7 +123,8 @@ jobs:
                 -var="data_lake=${{secrets.ANIME_DATA_LAKE_BUCKET}}" \
                 -var="secrets_manager_db_credentials=$(cat db_creds.json)" \
                 -var="account_id=${{secrets.ACCOUNT_ID}}" \
-                -var="secrets_manager_path=${{secrets.SECRETS_MANAGER_PATH}}"
+                -var="secrets_manager_path=${{secrets.SECRETS_MANAGER_PATH}}" \
+                -var="sfn_data_extract_name=${{secrets.SFN_PART_ONE_WORKFLOW}}"
 
 
 
