@@ -79,6 +79,5 @@ jobs:
                 -var="data_lake=${{secrets.ANIME_DATA_LAKE_BUCKET}}" \
                 -var="secrets_manager_db_credentials=$(cat db_creds.json)" \
                 -var="account_id=${{secrets.ACCOUNT_ID}}" \
-                -var="secrets_manager_path=${{secrets.SECRETS_MANAGER_PATH}}" \
-                -var="lambda_function_name=${{secrets.SFN_PART_ONE_WORKFLOW}}"
+                -var="secrets_manager_path=${{secrets.SECRETS_MANAGER_PATH}}"
           

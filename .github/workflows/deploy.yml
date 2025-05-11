@@ -102,6 +102,9 @@ jobs:
         - name: validate infra config syntax
           run: terraform validate
 
+        - name: format the infra code
+          run: terraform fmt --recursive
+
         - name: plan and check changes
           run: |
             echo '${{secrets.SNOWFLAKE_DB_CREDENTIALS}}' > db_creds.json
@@ -111,8 +114,7 @@ jobs:
                 -var="data_lake=${{secrets.ANIME_DATA_LAKE_BUCKET}}" \
                 -var="secrets_manager_db_credentials=$(cat db_creds.json)" \
                 -var="account_id=${{secrets.ACCOUNT_ID}}" \
-                -var="secrets_manager_path=${{secrets.SECRETS_MANAGER_PATH}}" \
-                -var="sfn_data_extract_name=${{secrets.SFN_PART_ONE_WORKFLOW}}"
+                -var="secrets_manager_path=${{secrets.SECRETS_MANAGER_PATH}}"
 
         - name: deploy infra configurations
           run: |
@@ -123,8 +125,7 @@ jobs:
                 -var="data_lake=${{secrets.ANIME_DATA_LAKE_BUCKET}}" \
                 -var="secrets_manager_db_credentials=$(cat db_creds.json)" \
                 -var="account_id=${{secrets.ACCOUNT_ID}}" \
-                -var="secrets_manager_path=${{secrets.SECRETS_MANAGER_PATH}}" \
-                -var="sfn_data_extract_name=${{secrets.SFN_PART_ONE_WORKFLOW}}"
+                -var="secrets_manager_path=${{secrets.SECRETS_MANAGER_PATH}}"
 
 
 
